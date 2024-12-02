@@ -40,11 +40,11 @@ public class Order implements Serializable {
     @JoinColumn(name = "client_id")
     private User client;
 
-    @OneToMany(mappedBy = "id.order")
-    private final Set<OrderItem> items = new HashSet<>();
-
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
+
+    @OneToMany(mappedBy = "id.order")
+    private final Set<OrderItem> items = new HashSet<>();
 
     public Order() {
     }
@@ -92,20 +92,24 @@ public class Order implements Serializable {
         this.client = client;
     }
 
-    public Set<OrderItem> getItems() {
-        return items;
-    }
-
-    public void addItem(OrderItem item) {
-        this.items.add(item);
-    }
-
     public Payment getPayment() {
         return payment;
     }
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public Double getTotal() {
+        return items.stream().map(OrderItem::getSubTotal).reduce(0.0, Double::sum);
+    }
+
+    public Set<OrderItem> getItems() {
+        return items;
+    }
+
+    public void addItem(OrderItem item) {
+        this.items.add(item);
     }
 
     @Override
