@@ -1,0 +1,10 @@
+services:
+  postgres:
+    container_name: springboot-jpa-postgres
+    image: 'postgres:16.3'
+    ports:
+      - '5432:5432'
+    environment:
+      - 'POSTGRES_DB=springboot_course'
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=1234567'
